@@ -34,10 +34,14 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  if (!user && pathname !== "/login") {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
+if (
+  !user &&
+  pathname !== "/login" &&
+  !pathname.startsWith("/auth") &&
+  pathname !== "/reset-password"
+) {
+  return NextResponse.redirect(new URL("/login", request.url));
+}
   if (user && pathname === "/login") {
     return NextResponse.redirect(new URL("/", request.url));
   }
